@@ -222,3 +222,34 @@ li{
 	border-radius: 10px;
 	margin-top: 10px;
 }
+
+@media (max-width: 1000px) {
+	#sandbox-cont{
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.board, #graph{
+		width: 80vw;
+	}
+
+	#sb-left, #sb-right{
+		width: 100%;
+	}
+
+	#slider{
+		width:50vw;
+		height: 1vh;
+	}
+
+	#slider::-webkit-slider-thumb {
+		width: 5vw;
+		height: 1vh;
+	}
+
+	button{
+		width: 25vw;
+	}
+}
