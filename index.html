@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+	<title>Adithya A Rao | Monte-Carlo</title>
+	<link rel="stylesheet" type="text/css" href="main.css">
+    <script src="https://cdn.plot.ly/plotly-2.12.1.min.js"></script>
+	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+	<script type="text/x-mathjax-config">
+		MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+	</script>
+	
+</head>
+<body>
+	<div id="main-cont">
+		
+		<center id="desc">
+			<h1>Monte Carlo Simulations</h1>
+			<div id="content">
+				It is almost impossible to exactly solve the mathematics for systems with a large number of degrees of freedom, like quantum many-body systems and quantum field theories. The Monte Carlo method is an ingenious method, drawing on probability distributions to get a very good numerical approximation for the systems. Here, we describe the Monte Carlo method for 2 dimensional Ising model, which is the model describing how molecular spins interact and give rise to magnetization.<br><br>
+
+				<div id="sandbox-describe">
+					In the below sandbox, you can interact with the Ising model and see the magnetization and the temperature change with every iteration. The 2D Ising model is simply an array of spins. Spin up is represented by a white tile and spin down is represented by a black tile. Each spin interacts with only 4 of its neighbors.<br>
+					You can set different temperatures and see how the thermal equilibrium state of the spins changes. You can also plot them to obtain the critical temperature for the system.<br><br>
+					A few points - We have set one iteration to be when $ n\times n $ spins are flipped randomly. The magnetization is not averaged for first 2000 iterations, after which it is averaged over the last 1000 iterations. You can pause (stop button) and resume (run button) the simulation at any point. 'Clear Board' only resets the spins, iterations and magnetization, while 'Reset' will redraw the board with $n$ number of rows, and also deletes the data added to the plot. 'Add To Plot' adds the absolute value of magnetization and the temperature to the plot. Changing the temperature while the simulation is running has no effect until the simulation has been stopped or the board has been cleared. If not stopped, the simulation will go on for 10000 iterations.<br><br>
+					To find out the math behind it, scroll down to the next section.
+				</div>
+
+				<center id="sandbox">
+					<h2>Sandbox</h2>
+					<div id="sandbox-cont">
+						<div id="sb-left">
+							<div id="board" class="board"></div>
+							<div id="boardcont">
+								<div>Temperature: &nbsp; </div>
+								<input type="range" id="slider" value="0.1" min="0.1" max="5" step="0.05"></input>
+								&nbsp;<div id="temp">0.1</div>	
+							</div>
+								<div id="values">
+									<div id="generation">Iteration: 0</div>
+									<div id="magnetisation">Magnetization: 0</div>
+								</div>
+							<div id="controls" class="controls">
+								<div id="init">
+									<label for="number">Number of rows</label>
+									<input type="number" id="number" value="30"></input>
+									<button onclick="initialize()">Reset</button>
+									<button onclick="clearBoard()">Clear Board</button>
+								</div>
+								<div id="runs">
+									<button onclick="addToPlot()">Add To Plot</button>
+								<!-- <button onclick="synchronous()">Synchronous Run</button> -->
+									<button onclick="start(0)">Run</button>
+									<button onclick="stop()">Stop</button>
+								</div>
+							</div>
+						</div>
+						<div id="sb-right">
+							<div id="graph" class="board"></div>
+						</div>
+					</div>
+				</center>
+				<center><h2>Mathematics Behind It: Monte Carlo Simulation</h2></center>
+				The ensemble average value (which is the average value that you would get if you observe the system) of an observable $f$ in a statistical system is given by 
+				$$
+					\langle f \rangle_p = \sum_{i=1}^{N} p(s_i) f(s_i)
+				$$
+				where $p(s_i)$ is the probability that the system will be in the state $s_i$ and $f(s_i)$ is the value of the observable $f$ in that state, and $N$ is the number of states for the system<br><br>
+				Usually, for systems with large number of degrees of freedom, the value of $N$ is pretty huge, and the above calculation becomes very inefficient to perform. <br><br>
+				It is worth noting that there are two ways to perform this calculation. <br>
+				<ol>
+					<li>The first way is to sample uniformly $n < N$ states randomly, calculate the both probability $p(s_i)$ and observable $f(s_i)$ for the sampled states and then calculate the approximate value of the observable $f$.</li>
+					<li>An even better method would be to draw states according to the probability distribution, and simply find the average of the function over a set of the states drawn. That is
+						$$
+							\langle f \rangle_p \approx \frac{1}{N} \sum_{i=1}^{N} f(s^p_i)
+						$$
+						where the $s^p$ are the states drawn according to the probability distribution. The Monte Carlo Method does exactly this. It allows one to sample states from any given probability distribution. 
+					</li>
+				</ol>
+
+				In the case of a Ising model (or for the record any statistical system), the probability of a system being in a state with energy $E$ is proportional to $\exp\left( -\frac{E}{kT} \right)$, and therefore the ensemble average value of an observable (we consider magnetization) $m$ would be 
+				$$
+					\langle m \rangle_p = \frac{1}{Z}\sum_{i=1}^{N} m(s_i) \exp\left( -\frac{E_i}{kT} \right) \approx \frac{1}{N} \sum_{i=1}^{N} m(s^p_i) 
+				$$
+				To draw random samples $s^p$ we follow the idea of Markov Chains, specifically the Metropolis algorithm.<br>
+				The Metropolis algorithm advances a configuration $s_{i-1}$ to $s_{i}$ as follows:
+				<ol>
+					<li>Choose a candidate configuration $s'$ starting from the original state $s$. In the Ising Model case, this is done by selecting randomly a spin and flipping it</li>
+					<li>Compute the difference in the energies $\Delta E = E(s') - E(s)$. Compute a random number $r$ uniformly distributed in the interval $[0,~1)$. </li>
+					<li> Accept the new configuration if $r \le \frac{P(s')}{P(s)} \equiv \exp\left( -\frac{\Delta E}{k T} \right)$, otherwise carry on the original state as the next state. </li>
+				</ol>
+				By repeating this above procedure multiple times, we can draw samples that follow the probability distribution, and therefore calculate the required expectation value. The general procedure is to wait for a first few iterations for the system to settle down, and then calculate the average value of the observable over the samples drawn.
+
+				<center><h2>The 2D Ising Model</h2></center>
+				The 2D Ising Model is a 2D square lattice of spins, each of which can be either up ($\sigma = +1$) or down ($\sigma = -1$). The energy for the system (without external magnetic field) is simply given by 
+				$$
+					E = -\sum_{\langle ij \rangle} \sigma_i \sigma_j
+				$$
+				where $\langle ij \rangle$ indicates all the pairs of spins that are adjacent to each other. <br>
+				The system undergoes a 2nd order phase transition at the critical temperature  $T_C$. For temperatures less than  $T_C$, the system magnetizes, and the state is called the ferromagnetic or the ordered state. For temperatures greater than $T_C$, the system will go to a disordered or paramagnetic state, in which case there is no net magnetization. <br><br>
+
+				The magnetization of the system is given by
+				$$
+				m = \frac{1}{N}\sum_{i=1}^{N} \sigma_i
+				$$
+	</div>
+</body>
+<script type="text/javascript" src="main.js"></script>
+</html>

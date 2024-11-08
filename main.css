@@ -1,0 +1,224 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap');
+
+*{
+	font-family: 'Roboto Slab';
+	line-height: 1.75;
+}
+
+:root{
+	--x: 8;
+}
+
+*{
+	transition: all 0.1s;
+}
+
+body, html{
+	height: 100vh;
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
+}
+
+#desc{
+	height:100vh;
+	overflow-y: scroll ;
+	padding-bottom: 10vh;
+}
+
+#main-cont{
+	padding-top: 20px;
+	/* display: grid;
+	grid-template-columns: 1fr 1.5fr; */
+}
+
+#sandbox-cont{
+	width: 100%;
+	display: grid;
+	grid-template-columns: 1.15fr 1fr;
+	padding-bottom: 20px;
+}
+
+#sandbox{
+	border: 1px solid black;
+	width: 100%;
+	margin-top:50px;
+	margin-bottom:50px;
+}
+
+#content{
+	width: 85vw;
+	text-align: justify;
+	margin-bottom: 10vh;
+}
+
+.controls>div{
+	width: 100%;
+}
+
+button, #number{
+	padding: 10px;
+	border-radius: 10px;
+	border:  2px solid black;
+	background-color: white;
+	width: 13%;
+	color: black;
+	transition: all 0.1s;
+}
+
+#number{
+	width: 60px;
+}
+
+#boardcont{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	padding:5px;
+	margin-top: 10px;
+	/* border: 1px solid black; */
+}
+
+#slider{
+	--webkit-appearance: none;  /* Override default CSS styles */
+	appearance: none;
+	/* transform: rotate(-90deg); */
+	border-radius: 0;
+	border: 1px solid black;
+	height: 10px;
+	width:200px;
+}
+
+#slider::-webkit-slider-thumb {
+	-webkit-appearance: none;  /* Override default CSS styles */
+	appearance: none;
+	border-radius: 0px;
+	border: 1px solid black;
+	background-color: black;
+	width: 6%;
+	height: 10px;
+	cursor: pointer;
+}
+
+#temp{
+	width: 10px;
+}
+
+
+button:hover{
+	background-color: black;
+	color: white;
+	border: 2px solid white;
+}
+
+.page{
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+}
+
+.board{
+	width: min(65vh, 50vw);
+	aspect-ratio: 1;
+	display: grid;
+	grid-template-columns: repeat(var(--x), 1fr);
+	grid-template-rows: repeat(var(--x), 1fr);
+	grid-gap: 1px;
+	background-color: #4b4b4b;
+}
+
+#graph{
+	background-color: white;
+	width: min(65vh, 50vw);
+}
+
+#sb-right{
+	/* display: flex;
+	flex-direction: column;
+	align-items: center;
+	align-content: center;
+	row-gap: 10px; */
+	z-index: -1;
+}
+
+#sb-left{
+	width: 45vw;
+}
+
+#heatmap{
+	display: flex;
+	flex-direction: row;
+}
+
+#colors{
+	width: 200px;
+	border: 1px solid black;
+	display: grid;
+	grid-template-columns: repeat(21, 1fr);
+}
+
+.board> .tile{
+	aspect-ratio:1;
+	background-color: black;
+	cursor: cell;
+}
+
+/* .board> .tile:hover{
+	opacity:0.1;
+} */
+
+.controls{
+	margin-top: 20px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+	width: 85vw;
+}
+
+
+
+.init, .runs{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+}
+
+#saves{
+	margin-top:5px;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+}
+
+li{
+	margin-bottom: 15px;
+}
+
+#sandbox-describe{
+	width: calc(100% - 40px);
+	text-align: justify;
+	border: 1px solid black;
+	margin-top: 20px;
+	padding:20px;
+}
+
+#values{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	column-gap: 5px;
+}
+
+#generation, #magnetisation{
+	border: 2px solid black;
+	padding:10px;
+	width: 25%;
+	border-radius: 10px;
+	margin-top: 10px;
+}
